@@ -101,7 +101,7 @@ export default function Home() {
   ];
 
   return (
-    <main ref={containerRef} className="min-h-screen xl:h-screen w-full overflow-y-auto xl:overflow-y-scroll xl:snap-y xl:snap-mandatory scroll-smooth no-scrollbar text-salvore-cream bg-[#0a0807] relative z-10 pb-8 xl:pb-0">
+    <main ref={containerRef} className="min-h-screen xl:h-screen w-full overflow-y-auto xl:overflow-y-scroll md:snap-y md:snap-mandatory scroll-smooth no-scrollbar text-salvore-cream bg-[#0a0807] relative z-10 pb-8 xl:pb-0">
       
       {/* IMMERSIVE FIXED BACKGROUND EFFECTS DECK */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
@@ -128,7 +128,7 @@ export default function Home() {
       </div>
 
       {/* PANEL 1: HERO */}
-      <section id="home" className="min-h-[85vh] xl:h-screen w-full xl:snap-start flex items-center justify-center relative px-4 sm:px-6 overflow-hidden pt-12 xl:pt-0">
+      <section id="home" className="w-full xl:snap-start flex items-center justify-center relative px-4 sm:px-6 overflow-hidden pt-12 xl:pt-0">
         <motion.div style={{ scale: scaleHeroBg }} className="absolute inset-0 z-0 opacity-[0.15] sm:opacity-[0.2]">
           <img 
             src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=2000" 
@@ -138,7 +138,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-[#090706]" />
         </motion.div>
         
-        <div className="relative z-10 flex flex-col items-center max-w-5xl space-y-4 sm:space-y-6 text-center px-2">
+        <div className="relative z-10 flex flex-col items-center max-w-5xl space-y-4 sm:space-y-6 text-center px-2 py-8">
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-2 glass-panel-luxury px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/5 bg-black/40 backdrop-blur-md max-w-full">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
             <span className="text-[8px] sm:text-[10px] font-mono tracking-widest uppercase text-white/80 line-clamp-1">ALLOCATION ACTIVE // 8 SEATS REMAINING</span>
@@ -159,7 +159,7 @@ export default function Home() {
       </section>
 
       {/* PANEL 2: ABOUT */}
-      <section id="about" className="min-h-screen xl:h-screen w-full xl:snap-start flex items-center justify-center relative px-4 sm:px-6 md:px-20 overflow-hidden py-8 sm:py-16 xl:py-0">
+      <section id="about" className="md:min-h-screen xl:h-screen w-full xl:snap-start flex items-center justify-center relative px-4 sm:px-6 md:px-20 overflow-hidden py-6 sm:py-16 xl:py-0">
         <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-12 items-center relative z-10">
           <div className="lg:col-span-5 space-y-3 sm:space-y-6">
             <span className="text-salvore-caramel text-[10px] sm:text-xs tracking-widest uppercase font-mono block">// CORE SYSTEM SPECIFICATIONS</span>
@@ -217,7 +217,7 @@ export default function Home() {
       </section>
 
       {/* PANEL 3: MENU GRID */}
-      <section id="menu" className="min-h-screen xl:h-screen w-full xl:snap-start flex items-center justify-center relative px-4 sm:px-6 md:px-12 overflow-hidden py-8 sm:py-16 xl:py-0">
+      <section id="menu" className="md:min-h-screen xl:h-screen w-full xl:snap-start flex items-center justify-center relative px-4 sm:px-6 md:px-12 overflow-hidden py-6 sm:py-16 xl:py-0">
         <div className="max-w-6xl w-full space-y-4 sm:space-y-8 relative z-10">
           <div className="text-center space-y-0.5 sm:space-y-2">
             <span className="text-salvore-caramel text-[10px] sm:text-xs tracking-widest uppercase font-mono block">// MICRO-LOT CURATIONS</span>
@@ -269,7 +269,7 @@ export default function Home() {
       </section>
 
       {/* PANEL 4: SIGNATURE LIQUID ART WORKSHOP */}
-      <section id="signature" className="min-h-screen xl:h-screen w-full xl:snap-start flex items-center justify-center relative px-4 sm:px-6 md:px-12 overflow-hidden py-8 sm:py-16 xl:py-0">
+      <section id="signature" className="md:min-h-screen xl:h-screen w-full xl:snap-start flex items-center justify-center relative px-4 sm:px-6 md:px-12 overflow-hidden py-6 sm:py-16 xl:py-0">
         <div className="max-w-6xl w-full space-y-4 sm:space-y-12 relative z-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/5 pb-2 sm:pb-6">
             <div className="space-y-0.5 sm:space-y-2">
@@ -295,7 +295,7 @@ export default function Home() {
       </section>
 
       {/* PANEL 5: VISUAL ECHOES GALLERY */}
-      <section id="gallery" className="min-h-screen xl:h-screen w-full xl:snap-start flex items-center justify-center relative px-4 sm:px-6 md:px-12 overflow-hidden py-8 sm:py-16 xl:py-0">
+      <section id="gallery" className="md:min-h-screen xl:h-screen w-full xl:snap-start flex items-center justify-center relative px-4 sm:px-6 md:px-12 overflow-hidden py-6 sm:py-16 xl:py-0">
         <div className="max-w-6xl w-full space-y-4 sm:space-y-8 relative z-10">
           <div className="text-center space-y-0.5">
             <span className="text-salvore-caramel text-[10px] sm:text-xs tracking-widest uppercase font-mono block">04 // Spatial Aesthetic</span>
@@ -320,7 +320,7 @@ export default function Home() {
       </section>
 
       {/* PANEL 6: CURATED GATHERINGS */}
-      <section id="events" className="min-h-screen xl:h-screen w-full xl:snap-start flex items-center justify-center relative px-4 sm:px-6 md:px-12 overflow-hidden py-8 sm:py-16 xl:py-0">
+      <section id="events" className="md:min-h-screen xl:h-screen w-full xl:snap-start flex items-center justify-center relative px-4 sm:px-6 md:px-12 overflow-hidden py-6 sm:py-16 xl:py-0">
         <div className="max-w-5xl w-full space-y-4 sm:space-y-8 relative z-10">
           <div className="text-center space-y-0.5">
             <span className="text-salvore-caramel text-[10px] sm:text-xs tracking-widest uppercase font-mono block">// INTENTIONAL ASSEMBLIES</span>
@@ -345,7 +345,7 @@ export default function Home() {
       </section>
 
       {/* PANEL 7: THE LEDGER */}
-      <section id="blog" className="min-h-screen xl:h-screen w-full xl:snap-start flex items-center justify-center relative px-4 sm:px-6 md:px-12 overflow-hidden py-8 sm:py-16 xl:py-0">
+      <section id="blog" className="md:min-h-screen xl:h-screen w-full xl:snap-start flex items-center justify-center relative px-4 sm:px-6 md:px-12 overflow-hidden py-6 sm:py-16 xl:py-0">
         <div className="max-w-4xl w-full space-y-4 sm:space-y-10 relative z-10">
           <div className="text-center space-y-0.5">
             <span className="text-salvore-caramel text-[10px] sm:text-xs tracking-widest uppercase font-mono block">06 // Academic Output</span>
@@ -367,7 +367,7 @@ export default function Home() {
       </section>
 
       {/* PANEL 8: FAQ ACCORDION */}
-      <section id="faq" className="min-h-screen xl:h-screen w-full xl:snap-start flex items-center justify-center relative px-4 sm:px-6 md:px-12 overflow-hidden py-8 sm:py-16 xl:py-0">
+      <section id="faq" className="md:min-h-screen xl:h-screen w-full xl:snap-start flex items-center justify-center relative px-4 sm:px-6 md:px-12 overflow-hidden py-6 sm:py-16 xl:py-0">
         <div className="max-w-4xl w-full grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-12 items-start relative z-10">
           <div className="lg:col-span-5 space-y-1 sm:space-y-4">
             <span className="text-salvore-caramel text-[10px] sm:text-xs tracking-widest uppercase font-mono block">07 // ASSISTANCE PROTOCOLS</span>
@@ -394,7 +394,7 @@ export default function Home() {
       </section>
 
       {/* PANEL 9: COORDINATES */}
-      <section id="contact" className="min-h-screen xl:h-screen w-full xl:snap-start flex items-center justify-center relative px-4 text-center overflow-hidden py-8 sm:py-16 xl:py-0">
+      <section id="contact" className="md:min-h-screen xl:h-screen w-full xl:snap-start flex items-center justify-center relative px-4 text-center overflow-hidden py-6 sm:py-16 xl:py-0">
         <div className="max-w-2xl space-y-6 sm:space-y-10 relative z-10 w-full px-2">
           <div className="space-y-0.5 sm:space-y-2">
             <span className="text-salvore-caramel text-[10px] sm:text-xs tracking-widest uppercase font-mono block">08 // RECEPTION CODES</span>
