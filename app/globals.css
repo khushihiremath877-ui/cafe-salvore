@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+@theme {
+  --color-salvore-dark: #090706;
+  --color-salvore-charcoal: #15110e;
+  --color-salvore-espresso: #1f1610;
+  --color-salvore-caramel: #c89b53;
+  --color-salvore-gold: #f3d79a;
+  --color-salvore-cream: #f9f6f0;
+}
+
+@layer base {
+  body {
+    /* Dramatic structural background gradient shift */
+    background: linear-gradient(180deg, #090706 0%, #15110e 50%, #1a120b 100%);
+    color: var(--color-salvore-cream);
+    font-feature-settings: "ss01" on, "cv11" on;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+}
+
+@layer utilities {
+  .glass-panel-luxury {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.005) 100%);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    border: 1px solid rgba(200, 155, 83, 0.1);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7);
+  }
+
+  .text-gradient-gold-premium {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(135deg, #fff 0%, #f3d79a 50%, #c89b53 100%);
+  }
+
+  /* Dramatic Ambient Plasma Lights */
+  .bg-nebula-amber {
+    background-image: radial-gradient(circle at center, rgba(200, 155, 83, 0.18) 0%, rgba(31, 22, 16, 0) 70%);
+  }
+  
+  .bg-nebula-espresso {
+    background-image: radial-gradient(circle at center, rgba(74, 54, 35, 0.25) 0%, rgba(9, 7, 6, 0) 60%);
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes floatOrbital {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(40px, -60px) scale(1.1); }
+  66% { transform: translate(-30px, 30px) scale(0.95); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+@keyframes floatOrbitalDelayed {
+  0% { transform: translate(0px, 0px) scale(1.05); }
+  50% { transform: translate(-50px, 40px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1.05); }
+}
+
+.animate-nebula-1 {
+  animation: floatOrbital 20s ease-in-out infinite;
+}
+
+.animate-nebula-2 {
+  animation: floatOrbitalDelayed 25s ease-in-out infinite;
+}
