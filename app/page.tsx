@@ -1,137 +1,94 @@
 
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, Compass, Shield, Clock, MapPin, ChevronRight, Calendar, BookOpen, Coffee, Zap } from "lucide-react";
+import { ArrowRight, Compass, Shield, Clock, MapPin, ChevronRight, Calendar, BookOpen } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState("Coffee");
+  const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // This now tracks the WHOLE page scroll, which is much more stable
-  const { scrollYProgress } = useScroll();
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
-  // --- INTERACTION ENGINE ---
-  // These numbers [0, 0.2] mean the animation happens in the first 20% of the page
-  const cupRotation = useTransform(scrollYProgress, [0.05, 0.2], [0, -90]);
-  const liquidY = useTransform(scrollYProgress, [0.12, 0.25], [-20, 450]);
-  const liquidOpacity = useTransform(scrollYProgress, [0.12, 0.15, 0.25], [0, 1, 0]);
-  const textBlur = useTransform(scrollYProgress, [0.15, 0.3], ["blur(15px)", "blur(0px)"]);
-  const textOpacity = useTransform(scrollYProgress, [0.15, 0.3], [0.1, 1]);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-  const menuData = {
+  // Parallax and Scale animations
+  const xTextLeft = useTransform(scrollYProgress, [0, 1], ["0%", "-40%"]);
+  const xTextRight = useTransform(scrollYProgress, [0, 1], ["-30%", "10%"]);
+  const scaleHeroBg = useTransform(scrollYProgress, [0, 0.2], [1, 1.12]);
+
+  const categories = ["Coffee", "Desserts", "Brunch"];
+  
+  const menuData: Record<string, Array<{ name: string; price: string; desc: string; tag: string; image: string }>> = {
     Coffee: [
-      { name: "24K Gold Espresso", price: "₹450", image: "https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=600" },
-      { name: "Saffron Latte", price: "₹410", image: "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?q=80&w=600" }
+      { name: "24K Gold Leaf Espresso", price: "₹450", desc: "Signature dark roast espresso extracted with mineralized water and garnished with pure edible 24k gold leafing.", tag: "Rare Blend", image: "https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=600" },
+      { name: "Smoked Caramel Macchiato", price: "₹520", desc: "Cold-smoked artisanal espresso layered over house-made salted caramel and velvet microfoam.", tag: "Tableside Smoke", image: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?q=80&w=600" }
     ],
-    Desserts: [{ name: "Saffron Opera", price: "₹720", image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=600" }],
-    Brunch: [{ name: "Truffle Benedict", price: "₹780", image: "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?q=80&w=600" }]
+    Desserts: [
+      { name: "Madagascar Vanilla Tart", price: "₹650", desc: "Crisp almond pastry shell filled with premium organic Madagascar bourbon vanilla bean custard.", tag: "Signature Sweet", image: "https://images.unsplash.com/photo-1519869325930-281384150729?q=80&w=600" },
+      { name: "Saffron Truffle Opera Cake", price: "₹720", desc: "Layered sponge architecture soaked in single-origin espresso runtime syrup and layered with delicate saffron chocolate ganache.", tag: "Limited Run", image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=600" }
+    ],
+    Brunch: [
+      { name: "Truffle Mushroom Benedict", price: "₹780", desc: "Poached free-range organic eggs, wild hand-picked forest mushrooms, shaved black truffle hollandaise on sourdough.", tag: "Chef Special", image: "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?q=80&w=600" },
+      { name: "Avocado Croissant Toast", price: "₹580", desc: "Flaky freshly-baked house croissant base layered with whipped Hass avocado mousse and micro-herbs.", tag: "Fresh Crop", image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=600" }
+    ]
   };
 
+  const faqs = [
+    { q: "Do you accommodate walk-ins?", a: "To ensure full structural acoustic clarity and custom tableside pours, we highly prioritize booked invitations." },
+    { q: "What is your bean allocation timeline?", a: "We rotate our single-estate micro-lots every 14 days following rigorous cupping adjustments." },
+    { q: "Is there a specific dress protocol?", a: "We invite our guests to lean into smart-casual or fine minimalist styling." }
+  ];
+
   return (
-    // REMOVED h-screen overflow-y-auto here to fix the scroll lock
-    <div className="relative w-full bg-[#0a0807] text-[#EAD8C0] selection:bg-[#D4A373]">
+    <main ref={containerRef} className="relative w-full h-screen overflow-y-auto overflow-x-hidden md:snap-y md:snap-mandatory no-scrollbar bg-[#0a0807] text-salvore-cream selection:bg-salvore-caramel selection:text-black">
       
-      {/* 1. HERO */}
-      <section className="relative w-full h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0 opacity-20 grayscale brightness-50">
-          <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2000" className="w-full h-full object-cover" alt="Hero" />
-        </div>
-        <div className="relative z-10 text-center space-y-4">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="font-serif text-7xl md:text-[11rem] tracking-tighter text-white font-bold leading-none"
-          >
-            SALVORE
-          </motion.h1>
-          <p className="text-[#D4A373] text-xs tracking-[0.6em] uppercase">Private Sanctuary & Roastery</p>
-        </div>
-      </section>
+      {/* BACKGROUND EFFECTS */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <div className="absolute top-[-10%] right-[-10%] w-[90vw] h-[90vw] bg-nebula-amber opacity-20 filter blur-[120px] rounded-full animate-nebula-1" />
+        <div className="absolute bottom-[10%] left-[-10%] w-[80vw] h-[80vw] bg-nebula-espresso opacity-20 filter blur-[100px] rounded-full animate-nebula-2" />
+      </div>
 
-      {/* 2. THE POURING ENGINE */}
-      <section className="relative h-[150vh] bg-[#120a07]">
-        <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden">
-            <div className="relative flex flex-col items-center">
-                <motion.div style={{ rotate: cupRotation }} className="z-20">
-                    <img 
-                        src="https://upload.wikimedia.org/wikipedia/commons/4/45/A_small_cup_of_coffee.png" 
-                        alt="Coffee Cup" 
-                        className="w-52 h-52 md:w-80 md:h-80 object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.8)]"
-                    />
-                </motion.div>
-                <motion.div style={{ y: liquidY, opacity: liquidOpacity }} className="absolute top-28 z-10 w-2 h-64 bg-gradient-to-b from-[#4E342E] to-transparent rounded-full blur-[2px]" />
-            </div>
-            <motion.div style={{ filter: textBlur, opacity: textOpacity }} className="mt-12 text-center px-6">
-                <h2 className="font-serif text-4xl md:text-7xl text-[#D4A373] font-bold">For Kind People, <br /> Brews & Planet</h2>
-            </motion.div>
-        </div>
-      </section>
+      {/* PARALLAX TYPOGRAPHY */}
+      <div className="absolute inset-0 z-0 pointer-events-none select-none opacity-[0.03] font-serif font-black uppercase text-white">
+        <motion.div style={{ x: xTextLeft }} className="text-[20vw] absolute top-[15vh]">SANCTUARY</motion.div>
+        <motion.div style={{ x: xTextRight }} className="text-[20vw] absolute top-[50vh]">RESERVE</motion.div>
+        <motion.div style={{ x: xTextLeft }} className="text-[20vw] absolute top-[85vh]">EXPERIENCE</motion.div>
+      </div>
 
-      {/* 3. ABOUT */}
-      <section className="relative bg-[#201410] py-32 px-6">
-        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-            <div className="space-y-6">
-                <h3 className="font-serif text-5xl text-white italic">The Vision.</h3>
-                <p className="text-white/60 text-lg leading-relaxed">Where structural acoustic calibration meets the finest micro-lots.</p>
-            </div>
-            <div className="border-l border-[#D4A373]/20 pl-8 space-y-4">
-                <Shield className="w-8 h-8 text-[#D4A373]" />
-                <h4 className="text-white text-xl font-bold font-serif">Acoustic Isolation</h4>
-                <p className="text-white/40 text-sm font-light">Engineered to eliminate environmental noise.</p>
-            </div>
-        </div>
-      </section>
-
-      {/* 4. MENU */}
-      <section className="bg-[#0a0807] py-32 px-6">
-        <div className="max-w-6xl mx-auto space-y-12">
-          <h2 className="font-serif text-4xl text-center text-[#D4A373] font-bold uppercase tracking-widest">Reserve Selection</h2>
-          <div className="flex justify-center gap-6 pb-8 border-b border-white/5">
-            {["Coffee", "Desserts", "Brunch"].map(cat => (
-              <button key={cat} onClick={() => setActiveCategory(cat)} className={`text-[10px] tracking-widest uppercase transition-all ${activeCategory === cat ? "text-[#D4A373]" : "text-white/30"}`}>{cat}</button>
-            ))}
+      {/* PANEL 1: HERO */}
+      <section id="home" className="relative w-full h-[90vh] md:h-screen md:snap-start flex items-center justify-center px-4 overflow-hidden">
+        <motion.div style={{ scale: scaleHeroBg }} className="absolute inset-0 z-0 opacity-20">
+          <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=2000" className="w-full h-full object-cover grayscale brightness-50" alt="Hero" />
+        </motion.div>
+        <div className="relative z-10 text-center space-y-6 max-w-4xl">
+          <div className="inline-flex items-center gap-2 glass-panel-luxury px-4 py-2 rounded-full border border-white/10 bg-black/40 backdrop-blur-md">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[10px] font-mono tracking-widest uppercase">ALLOCATION ACTIVE // 8 SEATS REMAINING</span>
           </div>
-          <div className="grid md:grid-cols-2 gap-12">
-            <AnimatePresence mode="wait">
-              <motion.div key={activeCategory} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid md:grid-cols-2 gap-12 col-span-2">
-                {menuData[activeCategory as keyof typeof menuData].map((item, i) => (
-                  <div key={i} className="flex gap-6 items-center group">
-                    <div className="w-24 h-24 rounded-2xl overflow-hidden bg-white/5 shrink-0">
-                        <img src={item.image} className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all" alt={item.name} />
-                    </div>
-                    <div className="flex-1 border-b border-white/5 pb-4">
-                        <div className="flex justify-between font-serif text-xl text-white"><span>{item.name}</span><span className="text-[#D4A373]">{item.price}</span></div>
-                    </div>
-                  </div>
-                ))}
-              </motion.div>
-            </AnimatePresence>
+          <h1 className="font-serif text-6xl md:text-[10rem] tracking-tighter text-gradient-gold-premium leading-none font-bold">SALVORE</h1>
+          <p className="text-sm md:text-xl text-salvore-cream/60 font-light tracking-wide max-w-2xl mx-auto">A private sanctuary where structural acoustic calibration meets single-estate fluid mastery.</p>
+          <div className="pt-4">
+            <a href="#about" className="glass-panel-luxury px-10 py-4 rounded-full inline-flex items-center gap-3 text-xs tracking-[0.3em] uppercase hover:bg-salvore-caramel hover:text-black transition-all duration-500">Explore The Estate <ArrowRight className="w-4 h-4" /></a>
           </div>
         </div>
       </section>
 
-      {/* 5. GALLERY */}
-      <section className="bg-[#0a0807] py-32 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
-            {["https://images.unsplash.com/photo-1554118811-1e0d58224f24", "https://images.unsplash.com/photo-1498804103079-a6351b050096", "https://images.unsplash.com/photo-1507133750040-4a8f57021571", "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4"].map((url, i) => (
-                <div key={i} className="h-64 rounded-3xl overflow-hidden bg-[#201410]">
-                    <img src={`${url}?q=80&w=600`} className="w-full h-full object-cover grayscale" alt="Gallery" />
-                </div>
-            ))}
-        </div>
-      </section>
-
-      {/* 6. FAQ & FOOTER */}
-      <footer className="bg-[#0a0807] py-40 px-6 border-t border-white/5 text-center">
-        <div className="max-w-4xl mx-auto space-y-12">
-            <h2 className="font-serif text-6xl text-white font-bold tracking-tighter italic">Visit Salvore.</h2>
-            <p className="text-white/40 text-xs tracking-widest uppercase">Lavelle Road, Bangalore // 07:00 AM — 11:00 PM</p>
-            <Link href="/book" className="inline-block px-12 py-5 rounded-full bg-gradient-to-r from-[#D4A373] to-[#A17C54] text-black font-bold uppercase text-[10px] tracking-[0.4em]">Book Invitation</Link>
-        </div>
-      </footer>
-    </div>
-  );
-}
+      {/* PANEL 2: ABOUT */}
+      <section id="about" className="relative w-full h-auto md:h-screen
